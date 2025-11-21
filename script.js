@@ -52,8 +52,10 @@ function initNavigation() {
 
     // Mobile menu toggle
     navToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+        const isActive = navMenu.classList.toggle('active');
         navToggle.classList.toggle('active');
+        // update aria state for accessibility
+        try { navToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false'); } catch (e) {}
     });
 
     // Close mobile menu on link click
@@ -79,6 +81,19 @@ function initNavigation() {
                 });
             }
         });
+    });
+
+    // Close mobile menu when clicking outside of it
+    document.addEventListener('click', (e) => {
+        // only care if menu is open
+        if (!navMenu.classList.contains('active')) return;
+
+        const clickInsideMenu = navMenu.contains(e.target) || navToggle.contains(e.target);
+        if (!clickInsideMenu) {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            try { navToggle.setAttribute('aria-expanded', 'false'); } catch (err) {}
+        }
     });
 }
 
