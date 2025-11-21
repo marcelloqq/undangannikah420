@@ -256,7 +256,12 @@ a {
 .hero {
     height: 100vh;
     min-height: 700px;
-    background: url('images/main.png') center/cover no-repeat;
+    background-image: url('images/main.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* keep hero background fixed when scrolling on desktop */
+    background-attachment: fixed;
     position: relative;
     display: flex;
     align-items: center;
@@ -685,6 +690,7 @@ a {
 }
 
 .venue-map {
+    margin: 0 20px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--shadow);
