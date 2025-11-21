@@ -10,7 +10,7 @@ const lightboxClose = document.querySelector('.lightbox-close');
 
 // ===== Countdown Timer =====
 function initCountdown() {
-    const weddingDate = new Date('December 17, 2025 10:00:00').getTime();
+    const weddingDate = new Date('December 17, 2025 12:00:00').getTime();
 
     function updateCountdown() {
         const now = new Date().getTime();
@@ -53,12 +53,14 @@ function initNavigation() {
     // Mobile menu toggle
     navToggle.addEventListener('click', () => {
         navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
     });
 
     // Close mobile menu on link click
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
         });
     });
 
@@ -80,18 +82,23 @@ function initNavigation() {
     });
 }
 
-// ===== Gallery Lightbox =====
+// ===== Enhanced Gallery Lightbox =====
+let currentImageIndex = 0;
+const lightboxCaption = document.querySelector('.lightbox-caption');
+const lightboxPrev = document.querySelector('.lightbox-prev');
+const lightboxNext = document.querySelector('.lightbox-next');
+
 function initGallery() {
-    galleryItems.forEach(item => {
+    galleryItems.forEach((item, index) => {
         item.addEventListener('click', () => {
-            const imgSrc = item.querySelector('img').src;
-            lightboxImage.src = imgSrc;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            currentImageIndex = index;
+            showLightboxImage();
         });
     });
 
     lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', showPreviousImage);
+    lightboxNext.addEventListener('click', showNextImage);
 
     lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
@@ -100,10 +107,45 @@ function initGallery() {
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-            closeLightbox();
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                showPreviousImage();
+            } else if (e.key === 'ArrowRight') {
+                showNextImage();
+            }
         }
     });
+}
+
+function showLightboxImage() {
+    const currentItem = galleryItems[currentImageIndex];
+    const imgSrc = currentItem.querySelector('img').src;
+    const caption = currentItem.querySelector('.polaroid-caption').textContent;
+
+    lightboxImage.src = imgSrc;
+    lightboxCaption.textContent = caption;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function showPreviousImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryItems.length) % galleryItems.length;
+    lightboxImage.style.animation = 'none';
+    setTimeout(() => {
+        lightboxImage.style.animation = '';
+        showLightboxImage();
+    }, 10);
+}
+
+function showNextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryItems.length;
+    lightboxImage.style.animation = 'none';
+    setTimeout(() => {
+        lightboxImage.style.animation = '';
+        showLightboxImage();
+    }, 10);
 }
 
 function closeLightbox() {
@@ -161,7 +203,32 @@ function initActiveNavHighlight() {
 }
 
 // ===== Initialize All =====
+// Add a small gallery shuffler to apply random rotations/translations to polaroid frames.
+// This was missing and caused a ReferenceError (breaking initialization), preventing the
+// countdown and other features from running.
+function shuffleGallery() {
+    if (!galleryItems || galleryItems.length === 0) return;
+
+    galleryItems.forEach(item => {
+        const frame = item.querySelector('.polaroid-frame');
+        if (!frame) return;
+
+        // small random rotation between -8 and 8 degrees
+        const rotate = (Math.random() * 16) - 8;
+        // tiny random translation for a scattered look
+        const translateX = (Math.random() * 20) - 10;
+        const translateY = (Math.random() * 12) - 6;
+
+        frame.style.transform = `rotate(${rotate}deg) translate(${translateX}px, ${translateY}px)`;
+        frame.style.transition = 'transform 0.6s ease';
+
+        // random z-index so they overlap naturally
+        item.style.zIndex = String(Math.floor(Math.random() * 10) + 1);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    shuffleGallery();
     initCountdown();
     initNavigation();
     initGallery();
