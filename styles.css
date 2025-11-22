@@ -369,6 +369,7 @@ a {
     overflow: hidden;
     border: 5px solid var(--border-color);
     box-shadow: var(--shadow);
+    transform: scaleX(-1);
 }
 
 .couple-image img {
