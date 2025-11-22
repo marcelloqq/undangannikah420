@@ -120,30 +120,15 @@ function initGallery() {
             closeLightbox();
         }
     });
-
-    document.addEventListener('keydown', (e) => {
-        if (lightbox.classList.contains('active')) {
-            if (e.key === 'Escape') {
-                closeLightbox();
-            } else if (e.key === 'ArrowLeft') {
-                showPreviousImage();
-            } else if (e.key === 'ArrowRight') {
-                showNextImage();
-            }
-        }
-    });
 }
 
 function showLightboxImage() {
     const currentItem = galleryItems[currentImageIndex];
     const imgSrc = currentItem.querySelector('img').src;
-    const captionElement = currentItem.querySelector('.polaroid-caption');
-    const caption = captionElement ? captionElement.textContent : '';
 
     lightboxImage.src = imgSrc;
     if (lightboxCaption) {
-        lightboxCaption.textContent = caption;
-        lightboxCaption.style.display = caption ? 'block' : 'none';
+        lightboxCaption.style.display = 'none';
     }
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -174,7 +159,7 @@ function closeLightbox() {
 
 // ===== Scroll Animations =====
 function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.timeline-item, .couple-card, .gallery-item');
+    const animatedElements = document.querySelectorAll('.couple-card, .gallery-item');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -221,68 +206,78 @@ function initActiveNavHighlight() {
     });
 }
 
-// ===== Enhanced Gallery Randomization =====
-function shuffleGallery() {
+// ===== Gallery Rotation Effect =====
+function applyGalleryRotation() {
     if (!galleryItems || galleryItems.length === 0) return;
 
-    // Convert NodeList to Array for shuffling
     const itemsArray = Array.from(galleryItems);
-
-    // Fisher-Yates shuffle algorithm for random order
-    for (let i = itemsArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const parent = itemsArray[i].parentNode;
-        const nextSibling = itemsArray[i].nextSibling;
-
-        parent.insertBefore(itemsArray[j], nextSibling);
-        parent.insertBefore(itemsArray[i], itemsArray[j]);
-
-        [itemsArray[i], itemsArray[j]] = [itemsArray[j], itemsArray[i]];
-    }
-
-    // Track used angles to ensure uniqueness
     const usedAngles = new Set();
 
-    // Check if mobile view (tablet and phone)
-    const isMobile = window.innerWidth <= 768;
+    itemsArray.forEach((item) => {
+        const card = item.querySelector('.photo-card');
+        if (!card) return;
 
-    itemsArray.forEach((item, index) => {
-        const frame = item.querySelector('.polaroid-frame');
-        if (!frame) return;
-
-        // Generate unique random rotation between -12 and +12 degrees
+        // Generate unique random rotation between -8 and +8 degrees
         let rotate;
         do {
-            rotate = Math.round((Math.random() * 24 - 12) * 10) / 10;
-        } while (usedAngles.has(rotate) && usedAngles.size < 240);
+            rotate = Math.round((Math.random() * 16 - 8) * 10) / 10;
+        } while (usedAngles.has(rotate) && usedAngles.size < 160);
         usedAngles.add(rotate);
 
-        // Random translation for crowded collage effect (no translation on mobile due to absolute positioning)
-        const translateX = isMobile ? 0 : (Math.random() * 20) - 10;
-        const translateY = isMobile ? 0 : (Math.random() * 16) - 8;
-
-        // Apply transform
-        frame.style.transform = `rotate(${rotate}deg) translate(${translateX}px, ${translateY}px)`;
-        frame.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-
-        // Random z-index for natural overlap (keep for mobile too)
-        item.style.zIndex = String(Math.floor(Math.random() * 5) + index);
+        // Apply rotation
+        card.style.transform = `rotate(${rotate}deg)`;
+        card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
     });
 }
 
-// Enhanced randomization on load and optional re-shuffle
-function initGalleryRandomization() {
-    shuffleGallery();
+function initGalleryRotation() {
+    applyGalleryRotation();
 
-    // Optional: Re-shuffle on window resize (debounced)
+    // Re-apply rotation on window resize (debounced)
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            shuffleGallery();
+            applyGalleryRotation();
         }, 500);
     });
 }
+
+// ===== Toggle Gift Cards Modal =====
+function toggleGiftCards() {
+    const modal = document.getElementById('giftModal');
+    if (!modal) return;
+
+    const isActive = modal.classList.toggle('active');
+
+    // Prevent body scroll when modal is open
+    if (isActive) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
+
+// ===== Global Keyboard Shortcuts =====
+document.addEventListener('keydown', (e) => {
+    // Lightbox controls
+    if (lightbox.classList.contains('active')) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+            showPreviousImage();
+        } else if (e.key === 'ArrowRight') {
+            showNextImage();
+        }
+        return;
+    }
+
+    // Gift modal Escape key
+    const modal = document.getElementById('giftModal');
+    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+        toggleGiftCards();
+    }
+});
 
 // ===== Copy to Clipboard for Bank Account =====
 function copyToClipboard(accountNumber, button) {
@@ -357,10 +352,10 @@ function animateCopyButton(button) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initGalleryRandomization();
     initCountdown();
     initNavigation();
     initGallery();
+    initGalleryRotation();
     initScrollAnimations();
     initActiveNavHighlight();
 });
