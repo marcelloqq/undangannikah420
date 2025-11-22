@@ -561,6 +561,7 @@ a {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    min-height: 548.75px;
 }
 
 .gift-header {
