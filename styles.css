@@ -369,7 +369,6 @@ a {
     overflow: hidden;
     border: 5px solid var(--border-color);
     box-shadow: var(--shadow);
-    transform: scaleX(-1);
 }
 
 .couple-image img {
@@ -433,7 +432,7 @@ a {
 /* ===== Countdown Section ===== */
 .countdown-section {
     padding: 40px 0;
-    background: url('/images/main/image3.jpg') center/cover no-repeat fixed;
+    background: url('/images/main/image3.jpg') center/fit no-repeat fixed;
     position: relative;
 }
 
@@ -453,7 +452,11 @@ a {
 .countdown-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #a94442 0%, rgb(192, 0, 0) 100%);
+    background-image: url(images/money_bg.jpg);
+    transform: scaleY(-1);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
 .countdown-section .container {

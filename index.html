@@ -9,6 +9,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&family=Pacifico&display=swap"
         rel="stylesheet">
+
+    <script>
+        let refreshed = sessionStorage.getItem("refreshed");
+        if (!refreshed) {
+            sessionStorage.setItem("refreshed", "yes");
+            location.reload(true);
+        }
+    </script>
 </head>
 
 <body>
@@ -55,7 +63,7 @@
             <div class="couple-container">
                 <div class="couple-card">
                     <div class="couple-image">
-                        <img src="images/groom.jpg" alt="Marco" style="transform: scaleX(-1);">
+                        <img src="images/groom.jpg" alt="Marco">
                     </div>
                     <h3>MARCO</h3>
                     <p class="couple-role">THE GROOM</p>
@@ -88,34 +96,7 @@
         </div>
     </section>
 
-    <!-- Countdown Section -->
-    <section id="countdown" class="countdown-section">
-        <div class="countdown-overlay"></div>
-        <div class="container">
-            <div class="section-header light">
-                <img src="images/save_the_date1.svg" alt="Save the Date" class="save-the-date-svg">
-                <p class="countdown-date-text">December 17, 2025</p>
-            </div>
-            <div class="countdown-timer" id="countdown-timer">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">000</span>
-                    <span class="countdown-label">Days</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">00</span>
-                    <span class="countdown-label">Hours</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">00</span>
-                    <span class="countdown-label">Minutes</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">00</span>
-                    <span class="countdown-label">Seconds</span>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Gallery Section -->
     <section id="gallery" class="gallery-section">
@@ -168,15 +149,47 @@
         </div>
     </section>
 
+    <!-- Countdown Section -->
+    <section id="countdown" class="countdown-section">
+        <div class="countdown-overlay"></div>
+        <div class="container">
+            <div class="section-header light">
+                <img src="images/save_the_date1.svg" alt="Save the Date" class="save-the-date-svg">
+                <p class="countdown-date-text">December 17, 2025</p>
+            </div>
+            <div class="countdown-timer" id="countdown-timer">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">000</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Kirim Hadiah Section -->
     <section id="gift" class="gift-section">
         <div class="container">
             <div class="gift-header">
                 <h2 class="gift-title">WEDDING GIFT</h2>
-                <p class="gift-description">Your attendance and heartfelt prayers are truly meaningful to us. Should you be unable to join the celebration and wish to extend a token of love, please feel free to use the feature below.</p>
+                <p class="gift-description">Your attendance and heartfelt prayers are truly meaningful to us. Should you
+                    be unable to join the celebration and wish to extend a token of love, please feel free to use the
+                    feature below.</p>
                 <button class="gift-toggle-btn" onclick="toggleGiftCards()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4l3.38 4.6L17 10.83 14.92 8H20v6z"/>
+                        <path
+                            d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4l3.38 4.6L17 10.83 14.92 8H20v6z" />
                     </svg>
                     SEND GIFT
                 </button>
@@ -201,8 +214,10 @@
                         <p class="account-holder">Marco</p>
                         <div class="account-number-wrapper">
                             <p class="account-number" data-account="8305251590">8305251590</p>
-                            <button class="copy-btn" onclick="copyToClipboard('8305251590', this)" aria-label="Copy account number">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <button class="copy-btn" onclick="copyToClipboard('8305251590', this)"
+                                aria-label="Copy account number">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                 </svg>
@@ -221,8 +236,10 @@
                         <p class="account-holder">Amanda Lie</p>
                         <div class="account-number-wrapper">
                             <p class="account-number" data-account="063097-88364699">063097-88364699</p>
-                            <button class="copy-btn" onclick="copyToClipboard('063097-88364699', this)" aria-label="Copy account number">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <button class="copy-btn" onclick="copyToClipboard('063097-88364699', this)"
+                                aria-label="Copy account number">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                 </svg>
@@ -271,7 +288,8 @@
                             <strong>Date:</strong> December 17, 2025<br>
                             <strong>Time:</strong> 12:00 PM onwards
                         </p>
-                        <a href="https://maps.google.com/?q=Adimulia+Hotel" target="_blank" class="btn btn-secondary">Get
+                        <a href="https://maps.google.com/?q=Adimulia+Hotel" target="_blank"
+                            class="btn btn-secondary">Get
                             Directions</a>
                     </div>
                 </div>
