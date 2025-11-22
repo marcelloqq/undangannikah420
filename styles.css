@@ -554,7 +554,10 @@ a {
 /* ===== Gift Section (Kirim Hadiah) ===== */
 .gift-section {
     padding: 80px 20px;
-    background: linear-gradient(135deg, #a94442 0%, #8b3634 100%);
+    background-image: url('images/money_bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
 .gift-header {
