@@ -453,7 +453,7 @@ a {
 .countdown-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #a94442 0%, #8b3634 100%);
+    background: linear-gradient(135deg, #a94442 0%, rgb(192, 0, 0) 100%);
 }
 
 .countdown-section .container {
