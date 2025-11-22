@@ -108,9 +108,9 @@ a {
 .section-subtitle {
     display: block;
     font-family: var(--font-serif);
-    font-size: 48px;
+    font-size: 28px;
     font-style: italic;
-    color: var(--primary-color);
+    color: var(--text-dark);
     margin-bottom: 10px;
     margin-top: 0px;
 }
@@ -1197,7 +1197,7 @@ a {
     }
 
     .section-subtitle {
-        font-size: 38px;
+        font-size: 28px;
     }
 
     .couple-bio {
