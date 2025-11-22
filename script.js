@@ -137,10 +137,14 @@ function initGallery() {
 function showLightboxImage() {
     const currentItem = galleryItems[currentImageIndex];
     const imgSrc = currentItem.querySelector('img').src;
-    const caption = currentItem.querySelector('.polaroid-caption').textContent;
+    const captionElement = currentItem.querySelector('.polaroid-caption');
+    const caption = captionElement ? captionElement.textContent : '';
 
     lightboxImage.src = imgSrc;
-    lightboxCaption.textContent = caption;
+    if (lightboxCaption) {
+        lightboxCaption.textContent = caption;
+        lightboxCaption.style.display = caption ? 'block' : 'none';
+    }
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -217,33 +221,143 @@ function initActiveNavHighlight() {
     });
 }
 
-// ===== Initialize All =====
-// Add a small gallery shuffler to apply random rotations/translations to polaroid frames.
-// This was missing and caused a ReferenceError (breaking initialization), preventing the
-// countdown and other features from running.
+// ===== Enhanced Gallery Randomization =====
 function shuffleGallery() {
     if (!galleryItems || galleryItems.length === 0) return;
 
-    galleryItems.forEach(item => {
+    // Convert NodeList to Array for shuffling
+    const itemsArray = Array.from(galleryItems);
+
+    // Fisher-Yates shuffle algorithm for random order
+    for (let i = itemsArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const parent = itemsArray[i].parentNode;
+        const nextSibling = itemsArray[i].nextSibling;
+
+        parent.insertBefore(itemsArray[j], nextSibling);
+        parent.insertBefore(itemsArray[i], itemsArray[j]);
+
+        [itemsArray[i], itemsArray[j]] = [itemsArray[j], itemsArray[i]];
+    }
+
+    // Track used angles to ensure uniqueness
+    const usedAngles = new Set();
+
+    // Check if mobile view (tablet and phone)
+    const isMobile = window.innerWidth <= 768;
+
+    itemsArray.forEach((item, index) => {
         const frame = item.querySelector('.polaroid-frame');
         if (!frame) return;
 
-        // small random rotation between -8 and 8 degrees
-        const rotate = (Math.random() * 16) - 8;
-        // tiny random translation for a scattered look
-        const translateX = (Math.random() * 20) - 10;
-        const translateY = (Math.random() * 12) - 6;
+        // Generate unique random rotation between -12 and +12 degrees
+        let rotate;
+        do {
+            rotate = Math.round((Math.random() * 24 - 12) * 10) / 10;
+        } while (usedAngles.has(rotate) && usedAngles.size < 240);
+        usedAngles.add(rotate);
 
+        // Random translation for crowded collage effect (no translation on mobile due to absolute positioning)
+        const translateX = isMobile ? 0 : (Math.random() * 20) - 10;
+        const translateY = isMobile ? 0 : (Math.random() * 16) - 8;
+
+        // Apply transform
         frame.style.transform = `rotate(${rotate}deg) translate(${translateX}px, ${translateY}px)`;
-        frame.style.transition = 'transform 0.6s ease';
+        frame.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-        // random z-index so they overlap naturally
-        item.style.zIndex = String(Math.floor(Math.random() * 10) + 1);
+        // Random z-index for natural overlap (keep for mobile too)
+        item.style.zIndex = String(Math.floor(Math.random() * 5) + index);
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// Enhanced randomization on load and optional re-shuffle
+function initGalleryRandomization() {
     shuffleGallery();
+
+    // Optional: Re-shuffle on window resize (debounced)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            shuffleGallery();
+        }, 500);
+    });
+}
+
+// ===== Copy to Clipboard for Bank Account =====
+function copyToClipboard(accountNumber, button) {
+    // Modern clipboard API with fallback
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(accountNumber)
+            .then(() => {
+                showToast();
+                animateCopyButton(button);
+            })
+            .catch(() => {
+                // Fallback for older browsers
+                fallbackCopyToClipboard(accountNumber, button);
+            });
+    } else {
+        // Fallback for older browsers
+        fallbackCopyToClipboard(accountNumber, button);
+    }
+}
+
+function fallbackCopyToClipboard(text, button) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.top = '-999999px';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        document.execCommand('copy');
+        showToast();
+        animateCopyButton(button);
+    } catch (err) {
+        console.error('Failed to copy:', err);
+    }
+
+    document.body.removeChild(textArea);
+}
+
+function showToast() {
+    const toast = document.getElementById('copyToast');
+    if (!toast) return;
+
+    // Show toast
+    toast.classList.add('show');
+
+    // Hide toast after 2.5 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2500);
+}
+
+function animateCopyButton(button) {
+    // Add success animation to the button
+    button.style.background = '#4CAF50';
+
+    // Change icon temporarily to checkmark
+    const originalHTML = button.innerHTML;
+    button.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+    `;
+
+    // Reset after 1.5 seconds
+    setTimeout(() => {
+        button.style.background = '';
+        button.innerHTML = originalHTML;
+    }, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initGalleryRandomization();
     initCountdown();
     initNavigation();
     initGallery();
