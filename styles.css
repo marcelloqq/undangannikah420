@@ -745,6 +745,9 @@ a {
     background-position: center center;
     background-size: cover;
     min-height: 548.75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .gift-header {
