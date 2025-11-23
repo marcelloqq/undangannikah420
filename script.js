@@ -360,3 +360,48 @@ document.addEventListener('DOMContentLoaded', () => {
     initActiveNavHighlight();
 });
 
+
+// ===== Vertical Envelope Opening Effect (Click to Open) =====
+window.addEventListener("load", () => {
+    const env = document.querySelector(".intro-envelope");
+    const flash = document.querySelector(".white-flash");
+
+    // Wait for user click anywhere on the envelope area
+    env.style.pointerEvents = "auto"; // allow clicking
+    env.addEventListener("click", () => {
+
+        // Prevent double-click opening
+        env.style.pointerEvents = "none";
+
+        // Start opening animation
+        env.classList.add("open");
+
+        // Fade white flash
+        flash.classList.add("fade-out");
+
+        // Cleanup after animation
+        setTimeout(() => {
+            env.remove();
+            flash.remove();
+        }, 2500); // match fade duration
+    });
+});
+
+
+// REMOVE PRELOADER WHEN EVERYTHING IS LOADED
+window.addEventListener("load", () => {
+    const preloader = document.getElementById("preloader");
+
+    // smooth fade out
+    preloader.style.opacity = "0";
+
+    // remove after fade
+    setTimeout(() => {
+        preloader.remove();
+    }, 500); // match CSS fade duration
+});
+
+
+
+
+
