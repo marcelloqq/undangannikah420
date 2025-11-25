@@ -7,6 +7,9 @@ const lightbox = document.getElementById('lightbox');
 const lightboxImage = document.querySelector('.lightbox-image');
 const lightboxClose = document.querySelector('.lightbox-close');
 
+document.documentElement.style.overflow = "hidden";
+document.body.style.overflow = "hidden";
+
 function initCountdown() {
     const weddingDate = new Date('December 17, 2025 12:00:00').getTime();
 
