@@ -1,4 +1,3 @@
-/* PRELOADER */
 #preloader {
     position: fixed;
     inset: 0;
@@ -23,8 +22,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* ===== Envelope Opening Intro ===== */
-
 .intro-envelope {
     position: fixed;
     inset: 0;
@@ -44,7 +41,6 @@
     transition: transform 2.5s ease-in-out;
 }
 
-/* TOP FLAP */
 .envelope.top {
     top: 0;
     background-image: url("images/env_text.jpg");
@@ -73,59 +69,25 @@
 }
 
 .stamp1 {
-    width: 45vh;           
+    width: 45vh;
     height: auto;
     transform: rotate(-23deg);
     position: absolute;
     top: 20%;
     left: 10%;
-    pointer-events: none;  
+    pointer-events: none;
 }
 
 .stamp2 {
-    width: 45vh;         
+    width: 45vh;
     height: auto;
     transform: rotate(35deg);
     position: absolute;
     top: 30%;
     left: 70%;
-    pointer-events: none;  
+    pointer-events: none;
 }
 
-@media (max-width: 992px) {
-
-    .stamp1 {
-        width: 45vh;       
-        top: 10%;
-        left: 10%;
-    }
-
-    .stamp2 {
-        width: 45vh;     
-        top: 40%;
-        left: 50%;
-    }
-}
-
-@media (max-width: 480px) {
-    .seal {
-        width: 20vh;
-    }
-
-    .stamp1 {
-        width: 30vh;       
-        top: 10%;
-        left: 15%;
-    }
-
-    .stamp2 {
-        width: 30vh;     
-        top: 50%;
-        left: 35%;
-    }
-}
-
-/* BOTTOM FLAP */
 .envelope.bottom {
     bottom: 0;
     background-image: url("images/env_text.jpg");
@@ -152,7 +114,6 @@
     transition: opacity 1s ease-in-out, transform 2.5s ease-in-out;
 }
 
-/* OPEN STATES */
 .intro-envelope.open .top {
     transform: translateY(-150%);
 }
@@ -180,8 +141,6 @@
     opacity: 0;
 }
 
-
-/* ===== CSS Variables ===== */
 :root {
     --primary-color: #e4b661;
     --primary-dark: #a88b4a;
@@ -200,7 +159,6 @@
     --font-sans: 'Montserrat', Arial, sans-serif;
 }
 
-/* ===== Reset & Base ===== */
 * {
     margin: 0;
     padding: 0;
@@ -238,10 +196,21 @@ a {
     transition: var(--transition);
 }
 
-/* ===== Utility Classes ===== */
 .container {
     margin: 0 auto;
     padding: 0;
+}
+
+.countdown-gift-wrapper {
+    background-color: rgb(192, 0, 0);
+}
+
+.couple-section-title {
+    padding-top: 20px;
+}
+
+.venue-map iframe {
+    border: 0;
 }
 
 .btn {
@@ -278,7 +247,6 @@ a {
     color: var(--text-white);
 }
 
-/* ===== Section Styles ===== */
 .section-header {
     text-align: center;
 }
@@ -317,7 +285,6 @@ a {
     letter-spacing: 8px;
 }
 
-/* ===== Navigation ===== */
 .navbar {
     position: fixed;
     top: 0;
@@ -411,24 +378,23 @@ a {
     background: var(--text-dark);
 }
 
-
 .nav-toggle.active span {
     background: var(--text-dark);
 }
 
-/* Hamburger -> X animation */
 .nav-toggle.active span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
+
 .nav-toggle.active span:nth-child(2) {
     opacity: 0;
     transform: scaleX(0);
 }
+
 .nav-toggle.active span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-/* ===== Hero Section ===== */
 .hero {
     height: 100vh;
     min-height: 700px;
@@ -436,8 +402,6 @@ a {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    /* keep hero background fixed when scrolling on desktop */
-    /* background-attachment: fixed; */
     position: relative;
     display: flex;
     align-items: center;
@@ -524,7 +488,6 @@ a {
     50% { transform: translateX(-50%) translateY(10px); }
 }
 
-/* ===== Couple Section ===== */
 .couple-section {
     padding: 0;
     background: var(--bg-light);
@@ -576,6 +539,7 @@ a {
     font-size: 17px;
     color: var(--text-light);
     line-height: 1.8;
+    min-height: 130px;
 }
 
 .couple-heart {
@@ -611,7 +575,6 @@ a {
     font-size: 15px;
 }
 
-/* ===== Countdown Section ===== */
 .countdown-section {
     padding: 40px 0;
     background: url('/images/main/image3.jpg') center/fit no-repeat fixed;
@@ -680,13 +643,11 @@ a {
     opacity: 0.8;
 }
 
-/* ===== Gallery Section ===== */
 .gallery-section {
     padding: 60px 20px;
     background: var(--bg-cream);
 }
 
-/* Desktop: Simple Grid Layout with Rotation */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -703,7 +664,6 @@ a {
     position: relative;
 }
 
-/* Photo Card Styling - polaroid aesthetic with rotation */
 .photo-card {
     background: white;
     padding: 15px 15px 20px 15px;
@@ -722,7 +682,6 @@ a {
     border-radius: 2px;
 }
 
-/* Hover Effects */
 .gallery-item:hover {
     transform: translateY(-8px);
     z-index: 100 !important;
@@ -736,7 +695,6 @@ a {
     transform: translateY(-4px);
 }
 
-/* ===== Gift Section (Kirim Hadiah) ===== */
 .gift-section {
     padding: 80px 20px;
     background-image: url('images/money_bg.jpg');
@@ -800,7 +758,6 @@ a {
     flex-shrink: 0;
 }
 
-/* ===== Gift Modal/Popup ===== */
 .gift-modal {
     position: fixed;
     inset: 0;
@@ -985,7 +942,6 @@ a {
     pointer-events: none;
 }
 
-/* Toast Notification */
 .toast {
     position: fixed;
     bottom: -100px;
@@ -1013,7 +969,6 @@ a {
     flex-shrink: 0;
 }
 
-/* ===== Enhanced Lightbox ===== */
 .lightbox {
     position: fixed;
     inset: 0;
@@ -1119,7 +1074,6 @@ a {
     backdrop-filter: blur(10px);
 }
 
-/* ===== Venue Section ===== */
 .venue-section {
     padding: 20px 0;
     margin-bottom: 20px;
@@ -1133,13 +1087,6 @@ a {
     align-items: center;
     margin-left: 0;
     margin-right: 0;
-}
-
-@media (min-width: 993px) {
-    .venue-container {
-        margin-left: 100px;
-        margin-right: 100px;
-    }
 }
 
 .venue-info {
@@ -1177,7 +1124,6 @@ a {
     display: block;
 }
 
-/* ===== Footer ===== */
 .footer {
     background: var(--bg-dark);
     color: var(--text-white);
@@ -1229,8 +1175,26 @@ a {
     opacity: 0.6;
 }
 
-/* ===== Responsive Design ===== */
+@media (min-width: 993px) {
+    .venue-container {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
+
 @media (max-width: 992px) {
+    .stamp1 {
+        width: 45vh;
+        top: 10%;
+        left: 10%;
+    }
+
+    .stamp2 {
+        width: 45vh;
+        top: 40%;
+        left: 50%;
+    }
+
     .hero-title {
         font-size: 60px;
     }
@@ -1243,7 +1207,6 @@ a {
         align-items: center !important;
         flex-direction: row !important;
         gap: 0px;
-        align-items: center;
         justify-content: center;
         margin-bottom: 30px;
     }
@@ -1293,7 +1256,6 @@ a {
         text-align: center;
     }
 
-    /* Tablet: 3-column grid with rotation */
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 25px;
@@ -1468,7 +1430,6 @@ a {
         font-size: 13px;
     }
 
-    /* Mobile: 2-column grid with bigger cards */
     .gallery-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 15px;
@@ -1485,7 +1446,6 @@ a {
         grid-column: span 2;
     }
 
-    /* Center the last 2 items in the row */
     .gallery-item:nth-child(7) {
         grid-column: 1 / 3;
     }
@@ -1607,13 +1567,23 @@ a {
     }
 }
 
-/* @media (max-width: 420px) {
-    .couple-bio {
-        max-width: ;
-    }
-} */
-
 @media (max-width: 480px) {
+    .seal {
+        width: 20vh;
+    }
+
+    .stamp1 {
+        width: 30vh;
+        top: 10%;
+        left: 15%;
+    }
+
+    .stamp2 {
+        width: 30vh;
+        top: 50%;
+        left: 35%;
+    }
+
     body {
         font-size: 16px;
         line-height: 1.8;
@@ -1665,7 +1635,6 @@ a {
         height: 190px;
     }
 
-
     .couple-card h3 {
         font-size: 22px;
         max-width: 140px;
@@ -1687,7 +1656,6 @@ a {
         margin: 0 auto;
         padding-bottom: 40px;
     }
-
 
     .lightbox-close {
         top: 15px;

@@ -1,4 +1,3 @@
-// ===== DOM Elements =====
 const navbar = document.querySelector('.navbar');
 const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.querySelector('.nav-menu');
@@ -8,7 +7,6 @@ const lightbox = document.getElementById('lightbox');
 const lightboxImage = document.querySelector('.lightbox-image');
 const lightboxClose = document.querySelector('.lightbox-close');
 
-// ===== Countdown Timer =====
 function initCountdown() {
     const weddingDate = new Date('December 17, 2025 12:00:00').getTime();
 
@@ -39,9 +37,7 @@ function initCountdown() {
     setInterval(updateCountdown, 1000);
 }
 
-// ===== Navigation =====
 function initNavigation() {
-    // Scroll effect for navbar
     window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
             navbar.classList.add('scrolled');
@@ -50,15 +46,12 @@ function initNavigation() {
         }
     });
 
-    // Mobile menu toggle
     navToggle.addEventListener('click', () => {
         const isActive = navMenu.classList.toggle('active');
         navToggle.classList.toggle('active');
-        // update aria state for accessibility
         try { navToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false'); } catch (e) { }
     });
 
-    // Close mobile menu on link click
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
@@ -66,7 +59,6 @@ function initNavigation() {
         });
     });
 
-    // Smooth scroll for navigation links
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -83,9 +75,7 @@ function initNavigation() {
         });
     });
 
-    // Close mobile menu when clicking outside of it
     document.addEventListener('click', (e) => {
-        // only care if menu is open
         if (!navMenu.classList.contains('active')) return;
 
         const clickInsideMenu = navMenu.contains(e.target) || navToggle.contains(e.target);
@@ -97,7 +87,6 @@ function initNavigation() {
     });
 }
 
-// ===== Enhanced Gallery Lightbox =====
 let currentImageIndex = 0;
 const lightboxCaption = document.querySelector('.lightbox-caption');
 const lightboxPrev = document.querySelector('.lightbox-prev');
@@ -157,7 +146,6 @@ function closeLightbox() {
     document.body.style.overflow = '';
 }
 
-// ===== Scroll Animations =====
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('.couple-card, .gallery-item');
 
@@ -181,7 +169,6 @@ function initScrollAnimations() {
     });
 }
 
-// ===== Active Navigation Highlight =====
 function initActiveNavHighlight() {
     const sections = document.querySelectorAll('section[id]');
 
@@ -206,7 +193,6 @@ function initActiveNavHighlight() {
     });
 }
 
-// ===== Gallery Rotation Effect =====
 function applyGalleryRotation() {
     if (!galleryItems || galleryItems.length === 0) return;
 
@@ -217,14 +203,12 @@ function applyGalleryRotation() {
         const card = item.querySelector('.photo-card');
         if (!card) return;
 
-        // Generate unique random rotation between -8 and +8 degrees
         let rotate;
         do {
             rotate = Math.round((Math.random() * 16 - 8) * 10) / 10;
         } while (usedAngles.has(rotate) && usedAngles.size < 160);
         usedAngles.add(rotate);
 
-        // Apply rotation
         card.style.transform = `rotate(${rotate}deg)`;
         card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
     });
@@ -233,7 +217,6 @@ function applyGalleryRotation() {
 function initGalleryRotation() {
     applyGalleryRotation();
 
-    // Re-apply rotation on window resize (debounced)
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
@@ -243,14 +226,12 @@ function initGalleryRotation() {
     });
 }
 
-// ===== Toggle Gift Cards Modal =====
 function toggleGiftCards() {
     const modal = document.getElementById('giftModal');
     if (!modal) return;
 
     const isActive = modal.classList.toggle('active');
 
-    // Prevent body scroll when modal is open
     if (isActive) {
         document.body.style.overflow = 'hidden';
     } else {
@@ -258,9 +239,7 @@ function toggleGiftCards() {
     }
 }
 
-// ===== Global Keyboard Shortcuts =====
 document.addEventListener('keydown', (e) => {
-    // Lightbox controls
     if (lightbox.classList.contains('active')) {
         if (e.key === 'Escape') {
             closeLightbox();
@@ -272,16 +251,13 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-    // Gift modal Escape key
     const modal = document.getElementById('giftModal');
     if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
         toggleGiftCards();
     }
 });
 
-// ===== Copy to Clipboard for Bank Account =====
 function copyToClipboard(accountNumber, button) {
-    // Modern clipboard API with fallback
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(accountNumber)
             .then(() => {
@@ -289,11 +265,9 @@ function copyToClipboard(accountNumber, button) {
                 animateCopyButton(button);
             })
             .catch(() => {
-                // Fallback for older browsers
                 fallbackCopyToClipboard(accountNumber, button);
             });
     } else {
-        // Fallback for older browsers
         fallbackCopyToClipboard(accountNumber, button);
     }
 }
@@ -323,20 +297,16 @@ function showToast() {
     const toast = document.getElementById('copyToast');
     if (!toast) return;
 
-    // Show toast
     toast.classList.add('show');
 
-    // Hide toast after 2.5 seconds
     setTimeout(() => {
         toast.classList.remove('show');
     }, 2500);
 }
 
 function animateCopyButton(button) {
-    // Add success animation to the button
     button.style.background = '#4CAF50';
 
-    // Change icon temporarily to checkmark
     const originalHTML = button.innerHTML;
     button.innerHTML = `
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -344,7 +314,6 @@ function animateCopyButton(button) {
         </svg>
     `;
 
-    // Reset after 1.5 seconds
     setTimeout(() => {
         button.style.background = '';
         button.innerHTML = originalHTML;
@@ -360,40 +329,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initActiveNavHighlight();
 });
 
-
-// // ===== Vertical Envelope Opening Effect (Click to Open) =====
-// window.addEventListener("load", () => {
-//     const env = document.querySelector(".intro-envelope");
-//     const flash = document.querySelector(".white-flash");
-
-//     // Wait for user click anywhere on the envelope area
-//     env.style.pointerEvents = "auto"; // allow clicking
-//     env.addEventListener("click", () => {
-
-//         // Prevent double-click opening
-//         env.style.pointerEvents = "none";
-
-//         // Start opening animation
-//         env.classList.add("open");
-
-//         // Fade white flash
-//         flash.classList.add("fade-out");
-
-//         // Cleanup after animation
-//         setTimeout(() => {
-//             env.remove();
-//             flash.remove();
-//         }, 2500); // match fade duration
-//     });
-// });
-
-
-// ===== Vertical Envelope Opening Effect (Click or Auto-Open) =====
 window.addEventListener("load", () => {
     const env = document.querySelector(".intro-envelope");
     const flash = document.querySelector(".white-flash");
 
-    // ===== Disable page scroll until envelope removed =====
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
 
@@ -403,58 +342,38 @@ window.addEventListener("load", () => {
         if (alreadyOpened) return;
         alreadyOpened = true;
 
-        // Block further clicks
         env.style.pointerEvents = "none";
 
-        // Start animation
         env.classList.add("open");
         flash.classList.add("fade-out");
 
-        // Cleanup after animation
         setTimeout(() => {
             env.remove();
             flash.remove();
 
-            // Re-enable page scroll
             document.body.style.overflow = "";
             document.documentElement.style.overflow = "";
         }, 2500);
     }
 
-    // ===== User click opens envelope =====
     env.style.pointerEvents = "auto";
     env.addEventListener("click", openEnvelope);
 
-    // ===== Auto-open after 3 seconds =====
     setTimeout(() => {
         openEnvelope();
     }, 3000);
 });
 
-
-
-// REMOVE PRELOADER WHEN EVERYTHING IS LOADED
 window.addEventListener("load", () => {
     const preloader = document.getElementById("preloader");
 
-    // smooth fade out
     preloader.style.opacity = "0";
 
-    // remove after fade
     setTimeout(() => {
         preloader.remove();
-    }, 500); // match CSS fade duration
+    }, 500);
 });
 
-// Always start at top when leaving
-// window.onbeforeunload = function () {
-//     window.scrollTo(0, 0);
-// };
-
-// Always start at top when loaded
 window.addEventListener("load", () => {
     window.scrollTo(0, 0);
 });
-
-
-
