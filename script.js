@@ -55,7 +55,7 @@ function initNavigation() {
         const isActive = navMenu.classList.toggle('active');
         navToggle.classList.toggle('active');
         // update aria state for accessibility
-        try { navToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false'); } catch (e) {}
+        try { navToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false'); } catch (e) { }
     });
 
     // Close mobile menu on link click
@@ -92,7 +92,7 @@ function initNavigation() {
         if (!clickInsideMenu) {
             navMenu.classList.remove('active');
             navToggle.classList.remove('active');
-            try { navToggle.setAttribute('aria-expanded', 'false'); } catch (err) {}
+            try { navToggle.setAttribute('aria-expanded', 'false'); } catch (err) { }
         }
     });
 }
@@ -361,31 +361,76 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ===== Vertical Envelope Opening Effect (Click to Open) =====
+// // ===== Vertical Envelope Opening Effect (Click to Open) =====
+// window.addEventListener("load", () => {
+//     const env = document.querySelector(".intro-envelope");
+//     const flash = document.querySelector(".white-flash");
+
+//     // Wait for user click anywhere on the envelope area
+//     env.style.pointerEvents = "auto"; // allow clicking
+//     env.addEventListener("click", () => {
+
+//         // Prevent double-click opening
+//         env.style.pointerEvents = "none";
+
+//         // Start opening animation
+//         env.classList.add("open");
+
+//         // Fade white flash
+//         flash.classList.add("fade-out");
+
+//         // Cleanup after animation
+//         setTimeout(() => {
+//             env.remove();
+//             flash.remove();
+//         }, 2500); // match fade duration
+//     });
+// });
+
+
+// ===== Vertical Envelope Opening Effect (Click or Auto-Open) =====
 window.addEventListener("load", () => {
     const env = document.querySelector(".intro-envelope");
     const flash = document.querySelector(".white-flash");
 
-    // Wait for user click anywhere on the envelope area
-    env.style.pointerEvents = "auto"; // allow clicking
-    env.addEventListener("click", () => {
+    // ===== Disable page scroll until envelope removed =====
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
-        // Prevent double-click opening
+    let alreadyOpened = false;
+
+    function openEnvelope() {
+        if (alreadyOpened) return;
+        alreadyOpened = true;
+
+        // Block further clicks
         env.style.pointerEvents = "none";
 
-        // Start opening animation
+        // Start animation
         env.classList.add("open");
-
-        // Fade white flash
         flash.classList.add("fade-out");
 
         // Cleanup after animation
         setTimeout(() => {
             env.remove();
             flash.remove();
-        }, 2500); // match fade duration
-    });
+
+            // Re-enable page scroll
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+        }, 2500);
+    }
+
+    // ===== User click opens envelope =====
+    env.style.pointerEvents = "auto";
+    env.addEventListener("click", openEnvelope);
+
+    // ===== Auto-open after 3 seconds =====
+    setTimeout(() => {
+        openEnvelope();
+    }, 3000);
 });
+
 
 
 // REMOVE PRELOADER WHEN EVERYTHING IS LOADED
@@ -401,7 +446,15 @@ window.addEventListener("load", () => {
     }, 500); // match CSS fade duration
 });
 
+// Always start at top when leaving
+// window.onbeforeunload = function () {
+//     window.scrollTo(0, 0);
+// };
 
+// Always start at top when loaded
+window.addEventListener("load", () => {
+    window.scrollTo(0, 0);
+});
 
 
 
